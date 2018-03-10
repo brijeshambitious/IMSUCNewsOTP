@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">IMSUC News</string>
+    <string name="action_settings">About</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_tab1">Tab1</string>
+    <string name="title_activity_splash">SplashActivity</string>
+</resources>
