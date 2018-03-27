@@ -19,7 +19,7 @@ public class SplashActivity extends Activity {
             int secondsDelayed = 1;
             new Handler().postDelayed(new Runnable() {
                 public void run() {
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    startActivity(new Intent(SplashActivity.this, PhoneActivity.class));
                     finish();
                 }
             }, secondsDelayed * 2000);
@@ -27,7 +27,7 @@ public class SplashActivity extends Activity {
             splashLoaded = true;
         }
         else {
-            Intent goToMainActivity = new Intent(SplashActivity.this, MainActivity.class);
+            Intent goToMainActivity = new Intent(SplashActivity.this, PhoneActivity.class);
             goToMainActivity.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(goToMainActivity);
             finish();
