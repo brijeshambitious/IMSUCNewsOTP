@@ -1,9 +1,11 @@
 package brijesh.imsucnews;
 
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -64,6 +66,9 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         requestPermission();
     }
 
+
+  /*  SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+    sharedPreferences.getString("phone", "RETURNED_VALUE_IF_KEY_DOES_NOT_EXIST");*/
 
 
 

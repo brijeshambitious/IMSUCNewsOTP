@@ -1,8 +1,10 @@
 package brijesh.imsucnews;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.CountDownTimer;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -83,11 +85,26 @@ public class PhoneActivity extends AppCompatActivity {
        // getWindow().setBackgroundDrawableResource(R.drawable.gradiennt1);
 
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // User is signed in
+            Intent i = new Intent(PhoneActivity.this, MainActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
+        } else {
+            // User is signed out
+            Log.d(TAG, "onAuthStateChanged:signed_out");
+        }
 
 
 
 
 
+
+       /* SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("phone", "XXX-XXXX-XXXX");
+        editor.apply();*/
 
 
 
@@ -314,8 +331,17 @@ public class PhoneActivity extends AppCompatActivity {
                             Log.d(TAG, "signInWithCredential:success");
                             //user phone number has been verified, what next?
                             FirebaseUser user = task.getResult().getUser();
+
+
+
+
+
+
                             Intent i = new Intent(PhoneActivity.this,MainActivity.class);
                             startActivity(i);
+
+
+
                             //its best you store the userID or details in shared preferences and store something in a shared pref to show the user has already logged in. then continue from there. you dont want users to be verifying their number all the time.
                             //go to next activity or do whatever you like
 
