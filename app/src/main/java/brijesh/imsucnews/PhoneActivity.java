@@ -65,7 +65,6 @@ public class PhoneActivity extends AppCompatActivity {
     // [END declare_auth]
 
 
-
     private CountryCodePicker ccp;
 
     private LinearLayout loadingProgress;
@@ -82,19 +81,27 @@ public class PhoneActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone);
-       // getWindow().setBackgroundDrawableResource(R.drawable.gradiennt1);
+
+        // getWindow().setBackgroundDrawableResource(R.drawable.gradiennt1);
 
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+
+
+      /*  FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             // User is signed in
             Intent i = new Intent(PhoneActivity.this, MainActivity.class);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);
+
         } else {
             // User is signed out
             Log.d(TAG, "onAuthStateChanged:signed_out");
-        }
+        }*/
+
+
+
 
 
 
@@ -107,26 +114,22 @@ public class PhoneActivity extends AppCompatActivity {
         editor.apply();*/
 
 
-
-
-
-
         //define views here
         inputCodeLayout = (LinearLayout) findViewById(R.id.inputCodeLayout);
-        loadingProgress = (LinearLayout)findViewById(R.id.loadingProgress);
+        loadingProgress = (LinearLayout) findViewById(R.id.loadingProgress);
         loadingProgress.setVisibility(View.INVISIBLE);
-        verifyLayout = (LinearLayout)findViewById(R.id.verifyLayout);
+        verifyLayout = (LinearLayout) findViewById(R.id.verifyLayout);
         ccp = (CountryCodePicker) findViewById(R.id.ccp);
-        loginButton = (Button)findViewById(R.id.loginButton);
-        phoneNumber = (AppCompatEditText)findViewById(R.id.phone_number);
+        loginButton = (Button) findViewById(R.id.loginButton);
+        phoneNumber = (AppCompatEditText) findViewById(R.id.phone_number);
         timer = (TextView) findViewById(R.id.timer);
         resendCode = (Button) findViewById(R.id.resend_code);
         smsCode = (Pinview) findViewById(R.id.sms_code);
 
 
-        relativeLayout = (RelativeLayout)findViewById(R.id.relativeLayout);
+        relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout);
 
-       // animationDrawable =(AnimationDrawable)linearLayout.getBackground();
+        // animationDrawable =(AnimationDrawable)linearLayout.getBackground();
 
         animationDrawable = (AnimationDrawable) relativeLayout.getBackground();
         animationDrawable.setEnterFadeDuration(50000);
@@ -159,7 +162,7 @@ public class PhoneActivity extends AppCompatActivity {
 // [END initialize_auth]
         mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
-           @Override
+            @Override
             public void onVerificationCompleted(PhoneAuthCredential credential) {
                 // This callback will be invoked in two situations:
                 // 1 - Instant verification. In some cases the phone number can be instantly
@@ -168,7 +171,6 @@ public class PhoneActivity extends AppCompatActivity {
                 //     detect the incoming verification SMS and perform verificaiton without
                 //     user action.
                 Log.d(TAG, "onVerificationCompleted:" + credential);
-
 
 
                 //sign in user to new Activity here
@@ -215,7 +217,7 @@ public class PhoneActivity extends AppCompatActivity {
 
                 //trigger this when the OTP code has finished typing
                 final String verifyCode = smsCode.getValue();
-                verifyPhoneNumberWithCode(mVerificationId,verifyCode);
+                verifyPhoneNumberWithCode(mVerificationId, verifyCode);
             }
         });
 
@@ -223,7 +225,7 @@ public class PhoneActivity extends AppCompatActivity {
     }
 
     private void retryVerify() {
-        resendVerificationCode(phone,mResendToken);
+        resendVerificationCode(phone, mResendToken);
     }
 
 
@@ -260,20 +262,20 @@ public class PhoneActivity extends AppCompatActivity {
         ccp.registerPhoneNumberTextView(phoneNumber);
         phone = ccp.getFullNumberWithPlus();
 
-        boolean cancel= false;
+        boolean cancel = false;
         View focusView = null;
 
         //check if phone number is valid: I would just check the length
-        if(!isPhoneValid(phone)){
+        if (!isPhoneValid(phone)) {
 
-            focusView=phoneNumber;
-            cancel=true;
+            focusView = phoneNumber;
+            cancel = true;
         }
 
-        if (cancel){
+        if (cancel) {
             //there was an error in the length of phone
             focusView.requestFocus();
-        }else{
+        } else {
 
             //show loading screen
             hideView(verifyLayout);
@@ -320,6 +322,7 @@ public class PhoneActivity extends AppCompatActivity {
 
         mVerificationInProgress = true;
     }
+
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
 
         mAuth.signInWithCredential(credential)
@@ -332,14 +335,9 @@ public class PhoneActivity extends AppCompatActivity {
                             //user phone number has been verified, what next?
                             FirebaseUser user = task.getResult().getUser();
 
-
-
-
-
-
-                            Intent i = new Intent(PhoneActivity.this,MainActivity.class);
+                            Intent i = new Intent(PhoneActivity.this, MainActivity.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(i);
-
 
 
                             //its best you store the userID or details in shared preferences and store something in a shared pref to show the user has already logged in. then continue from there. you dont want users to be verifying their number all the time.
@@ -352,21 +350,23 @@ public class PhoneActivity extends AppCompatActivity {
 
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 // The verification code entered was invalid
-                                Toast.makeText(PhoneActivity.this,"Invalid Verification Code",Toast.LENGTH_LONG).show();
+                                Toast.makeText(PhoneActivity.this, "Invalid Verification Code", Toast.LENGTH_LONG).show();
                             }
                         }
                     }
                 });
     }
-    private void showView (View... views){
-        for(View v: views){
+
+    private void showView(View... views) {
+        for (View v : views) {
             v.setVisibility(View.VISIBLE);
 
         }
 
     }
-    private void hideView (View... views){
-        for(View v: views){
+
+    private void hideView(View... views) {
+        for (View v : views) {
             v.setVisibility(View.INVISIBLE);
 
         }
@@ -388,7 +388,28 @@ public class PhoneActivity extends AppCompatActivity {
     }
 
 
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            // User is signed in
+            Intent i = new Intent(PhoneActivity.this, MainActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
+        }
+
+    }
 }
+
+
+
+
+
+
 
 
 
